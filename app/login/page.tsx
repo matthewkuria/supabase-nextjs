@@ -11,12 +11,15 @@ export default function LoginPage() {
   const isPending = isLoginPending || isSignupPending
 
   return (
-    <div className="flex-center" style={{ minHeight: '100vh', padding: '1rem' }}>
-      <div className="card" style={{ width: '100%', maxWidth: '28rem', padding: '2rem' }}>
+    // Uses the base background and text colors defined in :root
+    <div className="min-h-screen flex items-center justify-center p-4">
+      
+      {/* Uses the .card component class from globals.css */}
+      <div className="card w-full max-w-md p-8 sm:p-10">
         
         {/* Header */}
-        <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
-          <h1 style={{ fontSize: '1.875rem', marginBottom: '0.5rem' }}>
+        <div className="text-center mb-10">
+          <h1 className="text-3xl font-bold text-white mb-2">
             Welcome Back
           </h1>
           <p className="text-muted">
@@ -24,38 +27,23 @@ export default function LoginPage() {
           </p>
         </div>
 
-        {/* Messages */}
+        {/* Error Message - Styled with red tints to contrast dark theme */}
         {state?.error && (
-          <div className="card" style={{ 
-            marginBottom: '1rem', 
-            padding: '0.75rem',
-            background: 'rgba(239, 68, 68, 0.1)',
-            borderColor: 'rgba(239, 68, 68, 0.3)',
-            color: '#fca5a5',
-            fontSize: '0.875rem',
-            textAlign: 'center'
-          }}>
+          <div className="mb-6 p-4 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 text-sm text-center">
             {state.error}
           </div>
         )}
         
+        {/* Success Message - Styled with green tints */}
         {state?.success && (
-          <div className="card" style={{ 
-            marginBottom: '1rem', 
-            padding: '0.75rem',
-            background: 'rgba(34, 197, 94, 0.1)',
-            borderColor: 'rgba(34, 197, 94, 0.3)',
-            color: '#86efac',
-            fontSize: '0.875rem',
-            textAlign: 'center'
-          }}>
+          <div className="mb-6 p-4 rounded-lg bg-green-500/10 border border-green-500/20 text-green-400 text-sm text-center">
             {state.message}
           </div>
         )}
 
-        {/* Form */}
-        <form>
-          <div style={{ marginBottom: '1rem' }}>
+        {/* Form - Input and Label styles are automatically applied via @layer base in globals.css */}
+        <form className="space-y-6">
+          <div>
             <label htmlFor="email">Email Address</label>
             <input
               id="email"
@@ -67,7 +55,7 @@ export default function LoginPage() {
             />
           </div>
 
-          <div style={{ marginBottom: '1.5rem' }}>
+          <div>
             <label htmlFor="password">Password</label>
             <input
               id="password"
@@ -80,38 +68,30 @@ export default function LoginPage() {
             />
           </div>
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+          <div className="flex flex-col gap-3 pt-2">
+            {/* Uses .btn-primary component class */}
             <button 
               type="submit" 
               formAction={loginAction} 
               disabled={isPending}
-              className="primary"
-              style={{ 
-                width: '100%',
-                opacity: isPending ? 0.5 : 1,
-                cursor: isPending ? 'not-allowed' : 'pointer'
-              }}
+              className="btn-primary w-full"
             >
               {isLoginPending ? 'Logging in...' : 'Log In'}
             </button>
             
+            {/* Uses .btn-secondary component class[cite: 1] */}
             <button 
               type="submit" 
               formAction={signupAction} 
               disabled={isPending}
-              className="secondary"
-              style={{ 
-                width: '100%',
-                opacity: isPending ? 0.5 : 1,
-                cursor: isPending ? 'not-allowed' : 'pointer'
-              }}
+              className="btn-secondary w-full"
             >
               {isSignupPending ? 'Creating account...' : 'Create Account'}
             </button>
           </div>
         </form>
 
-        <p className="text-muted text-sm" style={{ textAlign: 'center', marginTop: '1.5rem' }}>
+        <p className="text-muted text-xs text-center mt-8">
           Password must be at least 6 characters long
         </p>
       </div>

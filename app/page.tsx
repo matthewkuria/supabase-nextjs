@@ -17,63 +17,72 @@ export default function HomePage() {
   }, [supabase])
 
   return (
-    <div className="container" style={{ paddingTop: '5rem', textAlign: 'center' }}>
-      {/* Hero */}
-      <div className="flex-center" style={{ flexDirection: 'column' }}>
-        <h1 style={{ fontSize: '3rem', marginBottom: '1rem' }}>
+    // Max-width container with top padding
+    <div className="max-w-6xl mx-auto pt-20 px-4 text-center">
+      
+      {/* Hero Section */}
+      <section className="flex flex-col items-center space-y-6">
+        <h1 className="text-5xl md:text-6xl font-bold tracking-tight text-white">
           User Management System
         </h1>
         
-        <p style={{ fontSize: '1.25rem', maxWidth: '600px', marginBottom: '2rem' }}>
-          Secure authentication and profile management for your Next.js applications
+        <p className="text-xl text-zinc-400 max-w-2xl">
+          Secure authentication and profile management for your Next.js applications.
         </p>
         
-        <div style={{ display: 'flex', gap: '1rem' }}>
+        <div className="flex gap-4 pt-4">
           {!user ? (
             <>
-              <Link href="/login">
-                <button className="primary">Login</button>
+              <Link href="/login" className="btn-primary">
+                Login
               </Link>
-              <Link href="/login">
-                <button className="secondary">Sign Up</button>
+              <Link href="/login" className="btn-secondary">
+                Sign Up
               </Link>
             </>
           ) : (
-            <Link href="/account">
-              <button className="primary" style={{ background: '#22c55e' }}>
-                Dashboard
-              </button>
+            <Link href="/account" className="btn-primary !bg-green-600 hover:!bg-green-500 !text-white">
+              Dashboard
             </Link>
           )}
         </div>
-      </div>
+      </section>
 
-      {/* Features */}
-      <div style={{ 
-        display: 'grid', 
-        gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', 
-        gap: '1.5rem',
-        marginTop: '4rem'
-      }}>
-        <div className="card" style={{ padding: '1.5rem' }}>
-          <h3>🔒 Secure</h3>
-          <p className="text-sm">RLS policies and Supabase auth</p>
+      {/* Features Grid using the .card class from globals.css */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-20">
+        <div className="card p-8 text-left group hover:border-zinc-700 transition-colors">
+          <h3 className="text-xl font-semibold mb-3 text-white flex items-center gap-2">
+            <span>🔒</span> Secure
+          </h3>
+          <p className="text-zinc-400 text-sm leading-relaxed">
+            Protect user data with Row Level Security (RLS) policies and robust Supabase authentication.
+          </p>
         </div>
         
-        <div className="card" style={{ padding: '1.5rem' }}>
-          <h3>⚡ Fast</h3>
-          <p className="text-sm">Next.js 15 server components</p>
+        <div className="card p-8 text-left group hover:border-zinc-700 transition-colors">
+          <h3 className="text-xl font-semibold mb-3 text-white flex items-center gap-2">
+            <span>⚡</span> Fast
+          </h3>
+          <p className="text-zinc-400 text-sm leading-relaxed">
+            Optimized for performance using Next.js 15 server components and streaming.
+          </p>
         </div>
         
-        <div className="card" style={{ padding: '1.5rem' }}>
-          <h3>🎨 Modern</h3>
-          <p className="text-sm">TypeScript + Tailwind CSS</p>
+        <div className="card p-8 text-left group hover:border-zinc-700 transition-colors">
+          <h3 className="text-xl font-semibold mb-3 text-white flex items-center gap-2">
+            <span>🎨</span> Modern
+          </h3>
+          <p className="text-zinc-400 text-sm leading-relaxed">
+            Beautifully crafted UI built with TypeScript and customized Tailwind CSS utilities.
+          </p>
         </div>
       </div>
 
-      {/* Footer */}
-      <footer style={{ marginTop: '4rem', padding: '2rem 0', borderTop: '1px solid var(--border)' }}>
-        <p className="text-muted text-sm">Built with Next.js and Supabase</p>
+      {/* Footer styled with variables from globals.css */}
+      <footer className="mt-24 py-10 border-t border-zinc-800">
+        <p className="text-zinc-500 text-sm">
+          Built with Next.js and Supabase
+        </p>
       </footer>
     </div>
   )

@@ -10,15 +10,10 @@ type Claims = {
   [key: string]: unknown
 }
 
-export default function AccountForm({
-  claims,
-}: {
-  claims: Claims | null
-}) {
+export default function AccountForm({ claims }: { claims: Claims | null }) {
   const supabase = createClient()
 
   const [loading, setLoading] = useState(true)
-
   const [fullname, setFullname] = useState('')
   const [username, setUsername] = useState('')
   const [website, setWebsite] = useState('')
@@ -32,16 +27,13 @@ export default function AccountForm({
       }
 
       setLoading(true)
-
       const { data, error, status } = await supabase
         .from('profiles')
         .select('full_name, username, website, avatar_url')
         .eq('id', claims.sub)
         .single()
 
-      if (error && status !== 406) {
-        throw error
-      }
+      if (error && status !== 406) throw error
 
       if (data) {
         setFullname(data.full_name || '')
@@ -80,7 +72,6 @@ export default function AccountForm({
       })
 
       if (error) throw error
-
       alert('Profile updated successfully!')
     } catch (error) {
       console.error(error)
@@ -91,124 +82,125 @@ export default function AccountForm({
   }
 
   return (
-    <div className="w-full max-w-3xl mx-auto">
-      
-      {/* Profile Card */}
-      <div className="card p-8">
+    <div className="w-full max-w-2xl mx-auto py-10 px-4">
+      <div className="bg-zinc-900/50 border border-zinc-800 rounded-2xl overflow-hidden shadow-xl">
         
-        {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-white">
+        {/* Header Section */}
+        <div className="p-8 border-b border-zinc-800 bg-zinc-900/30">
+          <h1 className="text-2xl font-semibold text-white tracking-tight">
             Account Settings
           </h1>
-
-          <p className="text-muted mt-2">
-            Manage your profile information and account details.
+          <p className="text-zinc-400 text-sm mt-1">
+            Manage your public profile and account security.
           </p>
         </div>
 
-        {/* Avatar Section */}
-        <div className="flex flex-col items-center justify-center mb-10">
-          <div className="mb-4">
+        <div className="p-8 space-y-8">
+          {/* Avatar row */}
+          <div className="flex flex-col sm:flex-row items-center gap-6 p-6 rounded-xl bg-zinc-800/20 border border-zinc-800/50">
             <Avatar
               uid={claims?.sub ?? null}
               url={avatar_url}
-              size={150}
-              onUpload={(url) => {
-                setAvatarUrl(url)
-              }}
+              size={80}
+              onUpload={(url) => setAvatarUrl(url)}
             />
+            <div className="text-center sm:text-left">
+              <h3 className="text-white font-medium">Profile Picture</h3>
+              <p className="text-zinc-500 text-sm mt-1 max-w-xs">
+                A personalized photo helps people recognize you. PNG or JPG preferred.
+              </p>
+            </div>
           </div>
 
-          <p className="text-sm text-muted">
-            Upload a profile picture
-          </p>
-        </div>
+          {/* Form Fields */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Email - Spans full width */}
+            <div className="md:col-span-2">
+              <label htmlFor="email" className="block text-sm font-medium text-zinc-300 mb-2 flex items-center justify-between">
+                Email Address
+                <span className="text-[10px] uppercase tracking-wider bg-zinc-800 px-2 py-0.5 rounded text-zinc-500 border border-zinc-700">
+                  Read Only
+                </span>
+              </label>
+              <input
+                id="email"
+                type="email"
+                value={claims?.email ?? ''}
+                disabled
+                className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-4 py-2.5 text-zinc-500 cursor-not-allowed"
+              />
+            </div>
 
-        {/* Form */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          
-          {/* Email */}
-          <div className="md:col-span-2">
-            <label htmlFor="email">
-              Email Address
-            </label>
+            {/* Full Name */}
+            <div className="space-y-2">
+              <label htmlFor="fullName" className="block text-sm font-medium text-zinc-300">
+                Full Name
+              </label>
+              <input
+                id="fullName"
+                type="text"
+                placeholder="e.g. Matthew Kuria"
+                value={fullname}
+                onChange={(e) => setFullname(e.target.value)}
+                className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-4 py-2.5 text-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all outline-none"
+              />
+            </div>
 
-            <input
-              id="email"
-              type="text"
-              value={claims?.email ?? ''}
-              disabled
-              className="opacity-70 cursor-not-allowed"
-            />
+            {/* Username */}
+            <div className="space-y-2">
+              <label htmlFor="username" className="block text-sm font-medium text-zinc-300">
+                Username
+              </label>
+              <input
+                id="username"
+                type="text"
+                placeholder="@mkuria"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-4 py-2.5 text-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all outline-none"
+              />
+            </div>
+
+            {/* Website */}
+            <div className="md:col-span-2 space-y-2">
+              <label htmlFor="website" className="block text-sm font-medium text-zinc-300">
+                Website
+              </label>
+              <input
+                id="website"
+                type="url"
+                placeholder="https://example.com"
+                value={website}
+                onChange={(e) => setWebsite(e.target.value)}
+                className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-4 py-2.5 text-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all outline-none"
+              />
+            </div>
           </div>
 
-          {/* Full Name */}
-          <div>
-            <label htmlFor="fullName">
-              Full Name
-            </label>
-
-            <input
-              id="fullName"
-              type="text"
-              placeholder="John Doe"
-              value={fullname}
-              onChange={(e) => setFullname(e.target.value)}
-            />
-          </div>
-
-          {/* Username */}
-          <div>
-            <label htmlFor="username">
-              Username
-            </label>
-
-            <input
-              id="username"
-              type="text"
-              placeholder="@johndoe"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-            />
-          </div>
-
-          {/* Website */}
-          <div className="md:col-span-2">
-            <label htmlFor="website">
-              Website
-            </label>
-
-            <input
-              id="website"
-              type="url"
-              placeholder="https://yourwebsite.com"
-              value={website}
-              onChange={(e) => setWebsite(e.target.value)}
-            />
-          </div>
-        </div>
-
-        {/* Action Buttons */}
-        <div className="flex flex-col sm:flex-row gap-4 mt-10">
-          
-          <button
-            onClick={updateProfile}
-            disabled={loading || !claims?.sub}
-            className="primary flex-1 disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            {loading ? 'Updating...' : 'Update Profile'}
-          </button>
-
-          <form action="/auth/signout" method="post" className="flex-1">
+          {/* Action Buttons */}
+          <div className="flex flex-col sm:flex-row gap-3 pt-4">
             <button
-              type="submit"
-              className="secondary w-full"
+              onClick={updateProfile}
+              disabled={loading || !claims?.sub}
+              className="flex-1 bg-white hover:bg-zinc-200 disabled:bg-zinc-700 disabled:text-zinc-500 text-black font-semibold py-2.5 px-4 rounded-lg transition-colors duration-200"
             >
-              Sign Out
+              {loading ? (
+                <span className="flex items-center justify-center gap-2">
+                  <div className="w-4 h-4 border-2 border-zinc-400 border-t-zinc-800 rounded-full animate-spin" />
+                  Updating...
+                </span>
+              ) : 'Save Changes'}
             </button>
-          </form>
 
+            <form action="/auth/signout" method="post" className="flex-1">
+              <button 
+                type="submit" 
+                className="w-full bg-zinc-800 hover:bg-zinc-700 text-white font-semibold py-2.5 px-4 rounded-lg transition-colors border border-zinc-700"
+              >
+                Sign Out
+              </button>
+            </form>
+          </div>
         </div>
       </div>
     </div>
