@@ -7,48 +7,56 @@ export default function LoginPage() {
   const [loginState, loginAction, isLoginPending] = useActionState(login, null)
   const [signupState, signupAction, isSignupPending] = useActionState(signup, null)
 
-  // Use the appropriate state based on which action was last called
   const state = loginState || signupState
   const isPending = isLoginPending || isSignupPending
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 via-gray-900 to-black px-4">
-      <div className="w-full max-w-md bg-white/10 backdrop-blur-lg border border-white/20 rounded-2xl shadow-2xl p-8">
+    <div className="flex-center" style={{ minHeight: '100vh', padding: '1rem' }}>
+      <div className="card" style={{ width: '100%', maxWidth: '28rem', padding: '2rem' }}>
         
         {/* Header */}
-        <div className="mb-8 text-center">
-          <h1 className="text-3xl font-bold text-white">
+        <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
+          <h1 style={{ fontSize: '1.875rem', marginBottom: '0.5rem' }}>
             Welcome Back
           </h1>
-          <p className="text-gray-300 mt-2">
+          <p className="text-muted">
             Login or create an account
           </p>
         </div>
 
-        {/* Error/Success Messages */}
+        {/* Messages */}
         {state?.error && (
-          <div className="mb-4 p-3 rounded-xl bg-red-500/10 border border-red-500/50 text-red-200 text-sm">
+          <div className="card" style={{ 
+            marginBottom: '1rem', 
+            padding: '0.75rem',
+            background: 'rgba(239, 68, 68, 0.1)',
+            borderColor: 'rgba(239, 68, 68, 0.3)',
+            color: '#fca5a5',
+            fontSize: '0.875rem',
+            textAlign: 'center'
+          }}>
             {state.error}
           </div>
         )}
         
         {state?.success && (
-          <div className="mb-4 p-3 rounded-xl bg-green-500/10 border border-green-500/50 text-green-200 text-sm">
+          <div className="card" style={{ 
+            marginBottom: '1rem', 
+            padding: '0.75rem',
+            background: 'rgba(34, 197, 94, 0.1)',
+            borderColor: 'rgba(34, 197, 94, 0.3)',
+            color: '#86efac',
+            fontSize: '0.875rem',
+            textAlign: 'center'
+          }}>
             {state.message}
           </div>
         )}
 
-        {/* Form - Using onSubmit to handle different actions */}
+        {/* Form */}
         <form>
-          {/* Email */}
-          <div className="flex flex-col gap-2 mb-4">
-            <label
-              htmlFor="email"
-              className="text-sm font-medium text-gray-200"
-            >
-              Email Address
-            </label>
-
+          <div style={{ marginBottom: '1rem' }}>
+            <label htmlFor="email">Email Address</label>
             <input
               id="email"
               name="email"
@@ -56,19 +64,11 @@ export default function LoginPage() {
               placeholder="Enter your email"
               required
               disabled={isPending}
-              className="w-full rounded-xl border border-gray-600 bg-white/5 px-4 py-3 text-white placeholder-gray-400 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
             />
           </div>
 
-          {/* Password */}
-          <div className="flex flex-col gap-2 mb-4">
-            <label
-              htmlFor="password"
-              className="text-sm font-medium text-gray-200"
-            >
-              Password
-            </label>
-
+          <div style={{ marginBottom: '1.5rem' }}>
+            <label htmlFor="password">Password</label>
             <input
               id="password"
               name="password"
@@ -77,34 +77,41 @@ export default function LoginPage() {
               required
               minLength={6}
               disabled={isPending}
-              className="w-full rounded-xl border border-gray-600 bg-white/5 px-4 py-3 text-white placeholder-gray-400 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
             />
           </div>
 
-          {/* Buttons */}
-          <div className="flex flex-col gap-4 pt-4">
-            <button
-              type="submit"
-              formAction={loginAction}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+            <button 
+              type="submit" 
+              formAction={loginAction} 
               disabled={isPending}
-              className="w-full rounded-xl bg-blue-600 py-3 font-semibold text-white transition hover:bg-blue-700 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed disabled:active:scale-100"
+              className="primary"
+              style={{ 
+                width: '100%',
+                opacity: isPending ? 0.5 : 1,
+                cursor: isPending ? 'not-allowed' : 'pointer'
+              }}
             >
               {isLoginPending ? 'Logging in...' : 'Log In'}
             </button>
-
-            <button
-              type="submit"
-              formAction={signupAction}
+            
+            <button 
+              type="submit" 
+              formAction={signupAction} 
               disabled={isPending}
-              className="w-full rounded-xl border border-gray-500 bg-transparent py-3 font-semibold text-white transition hover:bg-white/10 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed disabled:active:scale-100"
+              className="secondary"
+              style={{ 
+                width: '100%',
+                opacity: isPending ? 0.5 : 1,
+                cursor: isPending ? 'not-allowed' : 'pointer'
+              }}
             >
               {isSignupPending ? 'Creating account...' : 'Create Account'}
             </button>
           </div>
         </form>
 
-        {/* Optional: Password hint */}
-        <p className="text-xs text-gray-400 text-center mt-6">
+        <p className="text-muted text-sm" style={{ textAlign: 'center', marginTop: '1.5rem' }}>
           Password must be at least 6 characters long
         </p>
       </div>
